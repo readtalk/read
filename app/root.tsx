@@ -89,7 +89,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				{showInstallUI && (
 					<div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-4 z-50 border border-gray-200 dark:border-gray-700 animate-slide-up">
 						<div className="flex items-start gap-3">
-							<div className="text-3xl">💬</div>
+							<div className="text-3xl">📁</div>
 							<div className="flex-1">
 								<h3 className="font-semibold text-gray-800 dark:text-white">
 									Install READTalk
