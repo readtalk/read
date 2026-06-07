@@ -24,7 +24,7 @@ body {
 	transform-style: preserve-3d;
 }
 
-/* ========== DASHBOARD STYLES (dari App.css Vite React) ========== */
+/* ========== DASHBOARD STYLES ========== */
 .app-layout {
   background: #ffffff;
   color: #111b21;
@@ -142,6 +142,7 @@ body {
   flex: 1;
   display: flex;
   overflow: hidden;
+  min-height: 0; /* penting untuk flex child */
 }
 
 .app-sidebar {
@@ -149,12 +150,36 @@ body {
   max-width: 100%;
   background: #ffffff;
   overflow-y: auto;
+  flex-shrink: 0;
 }
 
+/* ========== PERBAIKAN UTAMA ========== */
 .app-content {
-  display: none;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0; /* penting untuk scroll */
+  display: block; /* override display: none */
 }
 
+/* ========== RESEND LIST ========== */
+.resend-list {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.resend-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.resend-item:hover {
+  background-color: #f5f5f5;
+}
+
+/* ========== EMPTY STATE ========== */
 .app-empty {
   height: 100%;
   display: flex;
@@ -171,6 +196,7 @@ body {
   margin-bottom: 16px;
 }
 
+/* ========== BOTTOM NAV ========== */
 .app-bottom-nav {
   height: 68px;
   background: #ffffff;
@@ -202,6 +228,7 @@ body {
   height: 24px;
 }
 
+/* ========== FAB ========== */
 .app-fab {
   position: fixed;
   bottom: 84px;
@@ -224,41 +251,7 @@ body {
   filter: brightness(0) invert(1);
 }
 
-.resend-list {
-  height: 100%;
-  overflow-y: auto;
-}
-
-.resend-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.resend-item:hover {
-  background-color: #f5f5f5;
-}
-
-.dark .resend-item:hover {
-  background-color: #2a3942;
-}
-
-/* Dark mode untuk dashboard */
-/* Dark mode: ubah warna icon SVG menjadi putih/terang */
-.dark .app-menu-btn img,
-.dark .app-bottom-icon,
-.dark .app-fab img,
-.dark .app-search-icon {
-  filter: brightness(0) invert(1);
-}
-
-/* Atau jika ingin warna merah khas READTalk */
-.dark .app-bottom-tab.active .app-bottom-icon {
-  filter: brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7483%) hue-rotate(0deg) brightness(98%) contrast(107%);
-}
-
+/* ========== DARK MODE ========== */
 .dark .app-layout {
   background: #111b21;
 }
@@ -314,4 +307,21 @@ body {
 
 .dark .app-bottom-tab.active {
   color: #ff0000;
+}
+
+.dark .resend-item:hover {
+  background-color: #2a3942;
+}
+
+/* Dark mode: ubah warna icon SVG menjadi putih/terang */
+.dark .app-menu-btn img,
+.dark .app-bottom-icon,
+.dark .app-fab img,
+.dark .app-search-icon {
+  filter: brightness(0) invert(1);
+}
+
+/* Warna merah untuk icon active di dark mode */
+.dark .app-bottom-tab.active .app-bottom-icon {
+  filter: brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7483%) hue-rotate(0deg) brightness(98%) contrast(107%);
 }
