@@ -1,12 +1,11 @@
-import { useNavigate } from 'react-router';
+import { useNavigate } from "react-router";
 
 export default function ResendList() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('readtalk_token');
-    localStorage.removeItem('readtalk_refresh_token');
-    navigate('/');
+    localStorage.removeItem("readtalk_token");
+    navigate("/");
   };
 
   return (
