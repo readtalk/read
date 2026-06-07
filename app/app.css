@@ -325,3 +325,18 @@ body {
 .dark .app-bottom-tab.active .app-bottom-icon {
   filter: brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7483%) hue-rotate(0deg) brightness(98%) contrast(107%);
 }
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
