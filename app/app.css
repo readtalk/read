@@ -225,6 +225,19 @@ body {
 }
 
 /* Dark mode untuk dashboard */
+/* Dark mode: ubah warna icon SVG menjadi putih/terang */
+.dark .app-menu-btn img,
+.dark .app-bottom-icon,
+.dark .app-fab img,
+.dark .app-search-icon {
+  filter: brightness(0) invert(1);
+}
+
+/* Atau jika ingin warna merah khas READTalk */
+.dark .app-bottom-tab.active .app-bottom-icon {
+  filter: brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7483%) hue-rotate(0deg) brightness(98%) contrast(107%);
+}
+
 .dark .app-layout {
   background: #111b21;
 }
