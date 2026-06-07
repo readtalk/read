@@ -65,11 +65,10 @@ export default function MainLayout() {
     navigate("/");
   };
 
+  // ✅ PERBAIKAN: Hapus navigate ke /chat/:id
   const handleSelectChat = (chatId: string) => {
     setSelectedChatId(chatId);
-    if (!isDesktop) {
-      navigate(`/chat/${chatId}`);
-    }
+    // Tidak perlu navigate, ChatRoom akan tampil di area yang sama
   };
 
   return (
@@ -118,10 +117,12 @@ export default function MainLayout() {
 
         {/* Main Content */}
         <main className="app-content">
-          {isDesktop ? (
+          {selectedChatId ? (
             <ChatRoom chatId={selectedChatId} />
           ) : (
-            <Outlet />
+            <div className="flex items-center justify-center h-full text-gray-500">
+              Select a chat to start messaging
+            </div>
           )}
         </main>
       </div>
