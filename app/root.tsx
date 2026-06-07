@@ -33,7 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Links />
 				{/* ========== TAMBAHAN PWA ========== */}
 				<link rel="manifest" href="/manifest.json" />
-				<meta name="theme-color" content="#ff0000" />
+				<meta name="theme-color" content="#ffffff" />
 			</head>
 			<body>
 				{children}
