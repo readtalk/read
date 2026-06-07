@@ -1,6 +1,14 @@
 import logo from "./logo.svg";
 
 export function Welcome() {
+  const handleAgree = () => {
+    const clientId = "readtalk";
+    const redirectUri = window.location.origin + "/callback";
+    const authUrl = `https://auth.readtalk.workers.dev/password/register?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+    
+    window.location.href = authUrl;
+  };
+
   return (
     <main className="h-[100dvh] bg-[#f7f8fa] flex flex-col items-center justify-center px-5 font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,sans-serif]">
       <div className="w-full max-w-[330px] flex flex-col items-center text-center">
@@ -30,9 +38,9 @@ export function Welcome() {
           </svg>
         </button>
 
-        {/* BUTTON AGREE - redirect ke /resendlist */}
+        {/* BUTTON AGREE - redirect ke OpenAuth register */}
         <button
-          onClick={() => window.location.href = "/resendlist"}
+          onClick={handleAgree}
           className="w-full h-12 bg-[#ff0000] text-white text-[15px] font-medium rounded-3xl active:bg-[#e60000]"
           style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.2)' }}
         >
