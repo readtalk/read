@@ -187,7 +187,7 @@ export default function MainLayout() {
             <div className="text-3xl">📁</div>
             <div className="flex-1">
               <h3 className="font-semibold text-gray-800 dark:text-white">
-                Install READTalk
+                Get Install
               </h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 Add to home screen for easy access
