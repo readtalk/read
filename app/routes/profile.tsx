@@ -10,11 +10,14 @@ export default function Profile() {
 
   useEffect(() => {
     const saved = localStorage.getItem("readtalk_theme") as "light" | "dark" | null;
-    if (saved) setTheme(saved);
-    if (saved === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+    if (saved) {
+      setTheme(saved);
+      // Terapkan class ke html element
+      if (saved === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
     }
   }, []);
 
@@ -22,6 +25,8 @@ export default function Profile() {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     localStorage.setItem("readtalk_theme", newTheme);
+    
+    // Terapkan class ke html element
     if (newTheme === "dark") {
       document.documentElement.classList.add("dark");
     } else {
@@ -39,7 +44,10 @@ export default function Profile() {
       <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
         <h1 className="text-xl font-bold text-gray-800 dark:text-white">READTalk</h1>
         <div className="flex gap-2">
-          <button onClick={toggleTheme} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800"
+          >
             {theme === "light" ? "🌙" : "☀️"}
           </button>
           <button className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800">
