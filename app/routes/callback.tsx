@@ -9,23 +9,36 @@ export default function Callback() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
+    const state = params.get("state");
     const error = params.get("error");
 
+    // 1. Cek error dari OpenAuth
     if (error) {
       setStatus("error");
       setErrorMessage(error);
       return;
     }
 
+    // 2. Cek ada code
     if (!code) {
       setStatus("error");
       setErrorMessage("No authorization code received");
       return;
     }
 
-    // Tukar code dengan access_token
+    // 3. Verifikasi state (CSRF protection)
+    const savedState = sessionStorage.getItem("oauth_state");
+    if (state && savedState && state !== savedState) {
+      setStatus("error");
+      setErrorMessage("State mismatch. Possible CSRF attack.");
+      return;
+    }
+
+    // 4. Tukar code dengan access_token
     const exchangeCode = async () => {
       try {
+        const redirectUri = window.location.origin + "/callback";
+        
         const response = await fetch("https://auth.readtalk.workers.dev/token", {
           method: "POST",
           headers: {
@@ -34,6 +47,8 @@ export default function Callback() {
           body: JSON.stringify({
             client_id: "readtalk",
             code: code,
+            redirect_uri: redirectUri,
+            grant_type: "authorization_code",
           }),
         });
 
@@ -43,12 +58,19 @@ export default function Callback() {
           throw new Error(data.error || "Token exchange failed");
         }
 
-        // Simpan token ke localStorage
+        // Simpan token
         if (data.access_token) {
           localStorage.setItem("readtalk_token", data.access_token);
-          localStorage.setItem("readtalk_refresh_token", data.refresh_token || "");
+          if (data.refresh_token) {
+            localStorage.setItem("readtalk_refresh_token", data.refresh_token);
+          }
+          if (data.expires_in) {
+            localStorage.setItem("readtalk_token_expiry", Date.now() + data.expires_in * 1000);
+          }
           
-          // Redirect ke halaman utama (ResendList) setelah login sukses
+          // Bersihkan state
+          sessionStorage.removeItem("oauth_state");
+          
           setStatus("success");
           setTimeout(() => {
             navigate("/resendlist");
