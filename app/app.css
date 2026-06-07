@@ -23,3 +23,29 @@ body {
 	animation: flip 3s linear infinite;
 	transform-style: preserve-3d;
 }
+
+/* Dark Mode */
+.dark {
+  background-color: #111b21 !important;
+  color: #e9edef !important;
+}
+
+.dark .bg-white {
+  background-color: #111b21 !important;
+}
+
+.dark .text-gray-800 {
+  color: #e9edef !important;
+}
+
+.dark .border-gray-200 {
+  border-color: #2a3942 !important;
+}
+
+.dark .bg-gray-100 {
+  background-color: #2a3942 !important;
+}
+
+.dark button.bg-gray-100 {
+  background-color: #2a3942 !important;
+}
