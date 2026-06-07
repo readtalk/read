@@ -1,0 +1,12 @@
+{
+  "name": "READTalk PWA Dummy",
+  "short_name": "READTalk",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    { "src": "/use192.svg", "sizes": "192x192", "type": "image/svg+xml" },
+    { "src": "/use512.svg", "sizes": "512x512", "type": "image/svg+xml" }
+  ]
+}
