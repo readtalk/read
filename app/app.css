@@ -25,3 +25,12 @@ body {
 	animation: flip 3s linear infinite;
 	transform-style: preserve-3d;
 }
+
+:root {
+  color-scheme: light dark;
+}
+
+.dark {
+  background-color: #111b21;
+  color: #e9edef;
+}
