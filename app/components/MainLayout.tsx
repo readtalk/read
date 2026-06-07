@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { Outlet, Link, useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
+import useMediaQuery from "../hooks/useMediaQuery";
+import ResendList from "./ResendList";
+import ChatRoom from "./ChatRoom";
 
 // Assets
 import MenuDotsVertical from "../assets/menu-dots-vertical.svg";
@@ -13,6 +16,8 @@ import PhoneCallIcon from "../assets/phone-call.svg";
 
 export default function MainLayout() {
   const navigate = useNavigate();
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [userId, setUserId] = useState("");
   const [email, setEmail] = useState("");
   const [showMenu, setShowMenu] = useState(false);
@@ -27,7 +32,14 @@ export default function MainLayout() {
 
   useEffect(() => {
     const saved = localStorage.getItem("readtalk_theme") as "light" | "dark" | null;
-    if (saved) setTheme(saved);
+    if (saved) {
+      setTheme(saved);
+      if (saved === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -41,11 +53,23 @@ export default function MainLayout() {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     localStorage.setItem("readtalk_theme", newTheme);
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("readtalk_token");
     navigate("/");
+  };
+
+  const handleSelectChat = (chatId: string) => {
+    setSelectedChatId(chatId);
+    if (!isDesktop) {
+      navigate(`/chat/${chatId}`);
+    }
   };
 
   return (
@@ -87,14 +111,18 @@ export default function MainLayout() {
       </div>
 
       <div className="app-main">
-        <aside className="app-sidebar">
-          <div className="app-empty">
-            <img src={EnvelopeIcon} alt="Empty" className="app-empty-icon" />
-            <p className="app-empty-text">No items to resend</p>
-          </div>
+        {/* Sidebar: Resend List */}
+        <aside className={`app-sidebar ${!isDesktop && selectedChatId ? "hidden" : ""}`}>
+          <ResendList onSelectChat={handleSelectChat} />
         </aside>
+
+        {/* Main Content */}
         <main className="app-content">
-          <Outlet /> {/* ← konten halaman (profile, chat, settings) akan masuk di sini */}
+          {isDesktop ? (
+            <ChatRoom chatId={selectedChatId} />
+          ) : (
+            <Outlet />
+          )}
         </main>
       </div>
 
