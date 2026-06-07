@@ -6,6 +6,7 @@ import {
 	Scripts,
 	ScrollRestoration,
 } from "react-router";
+import { useEffect, useState } from "react";
 
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -24,6 +25,38 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+	const [installPrompt, setInstallPrompt] = useState<any>(null);
+	const [showInstallUI, setShowInstallUI] = useState(false);
+
+	useEffect(() => {
+		// Tangkap event beforeinstallprompt
+		const handleBeforeInstallPrompt = (e: Event) => {
+			e.preventDefault();
+			setInstallPrompt(e);
+			setShowInstallUI(true);
+		};
+
+		window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+		return () => {
+			window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+		};
+	}, []);
+
+	const handleInstall = () => {
+		if (installPrompt) {
+			installPrompt.prompt();
+			installPrompt.userChoice.then(() => {
+				setShowInstallUI(false);
+				setInstallPrompt(null);
+			});
+		}
+	};
+
+	const dismissInstall = () => {
+		setShowInstallUI(false);
+	};
+
 	return (
 		<html lang="en">
 			<head>
@@ -39,7 +72,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				{children}
 				<ScrollRestoration />
 				<Scripts />
-				{/* ========== TAMBAHAN SERVICE WORKER ========== */}
+				{/* ========== SERVICE WORKER ========== */}
 				<script
 					dangerouslySetInnerHTML={{
 						__html: `
@@ -51,6 +84,43 @@ export function Layout({ children }: { children: React.ReactNode }) {
 						`,
 					}}
 				/>
+
+				{/* ========== CUSTOM PWA INSTALL PROMPT ========== */}
+				{showInstallUI && (
+					<div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-4 z-50 border border-gray-200 dark:border-gray-700 animate-slide-up">
+						<div className="flex items-start gap-3">
+							<div className="text-3xl">💬</div>
+							<div className="flex-1">
+								<h3 className="font-semibold text-gray-800 dark:text-white">
+									Install READTalk
+								</h3>
+								<p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+									Get app-like experience with home screen icon
+								</p>
+								<div className="flex gap-2 mt-3">
+									<button
+										onClick={handleInstall}
+										className="px-4 py-1.5 bg-red-600 text-white text-sm font-medium rounded-full hover:bg-red-700 transition-colors"
+									>
+										Install
+									</button>
+									<button
+										onClick={dismissInstall}
+										className="px-4 py-1.5 text-gray-600 dark:text-gray-400 text-sm font-medium rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+									>
+										Not now
+									</button>
+								</div>
+							</div>
+							<button
+								onClick={dismissInstall}
+								className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+							>
+								✕
+							</button>
+						</div>
+					</div>
+				)}
 			</body>
 		</html>
 	);
