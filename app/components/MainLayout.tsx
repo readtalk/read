@@ -23,6 +23,40 @@ export default function MainLayout() {
   const [showMenu, setShowMenu] = useState(false);
   const [activeTab, setActiveTab] = useState("chat");
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  
+  // ========== PWA INSTALL PROMPT ==========
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
+  const [showInstallUI, setShowInstallUI] = useState(false);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+      setShowInstallUI(true);
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstall = () => {
+    if (installPrompt) {
+      installPrompt.prompt();
+      installPrompt.userChoice.then(() => {
+        setShowInstallUI(false);
+        setInstallPrompt(null);
+      });
+    }
+  };
+
+  const dismissInstall = () => {
+    setShowInstallUI(false);
+  };
+
+  // ========== END PWA INSTALL PROMPT ==========
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -65,10 +99,8 @@ export default function MainLayout() {
     navigate("/");
   };
 
-  // ✅ PERBAIKAN: Hapus navigate ke /chat/:id
   const handleSelectChat = (chatId: string) => {
     setSelectedChatId(chatId);
-    // Tidak perlu navigate, ChatRoom akan tampil di area yang sama
   };
 
   return (
@@ -110,12 +142,10 @@ export default function MainLayout() {
       </div>
 
       <div className="app-main">
-        {/* Sidebar: Resend List */}
         <aside className={`app-sidebar ${!isDesktop && selectedChatId ? "hidden" : ""}`}>
           <ResendList onSelectChat={handleSelectChat} />
         </aside>
 
-        {/* Main Content */}
         <main className="app-content">
           {selectedChatId ? (
             <ChatRoom chatId={selectedChatId} />
@@ -149,6 +179,43 @@ export default function MainLayout() {
       <button className="app-fab">
         <img src={UserAddIcon} alt="Add" />
       </button>
+
+      {/* ========== CUSTOM PWA INSTALL PROMPT ========== */}
+      {showInstallUI && (
+        <div className="fixed bottom-20 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-4 z-50 border border-gray-200 dark:border-gray-700 animate-slide-up">
+          <div className="flex items-start gap-3">
+            <div className="text-3xl">📁</div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-800 dark:text-white">
+                Install READTalk
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Add to home screen for easy access
+              </p>
+              <div className="flex gap-2 mt-3">
+                <button
+                  onClick={handleInstall}
+                  className="px-4 py-1.5 bg-red-600 text-white text-sm font-medium rounded-full hover:bg-red-700 transition-colors"
+                >
+                  Install
+                </button>
+                <button
+                  onClick={dismissInstall}
+                  className="px-4 py-1.5 text-gray-600 dark:text-gray-400 text-sm font-medium rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  Not now
+                </button>
+              </div>
+            </div>
+            <button
+              onClick={dismissInstall}
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
