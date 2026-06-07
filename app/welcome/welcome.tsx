@@ -2,16 +2,9 @@ import logo from "./logo.svg";
 
 export function Welcome() {
   const handleAgree = () => {
-    const clientId = "readtalk";
-    const redirectUri = window.location.origin + "/callback";
-    const state = Math.random().toString(36).substring(2, 15);
-    
-    // Simpan state untuk verifikasi (opsional, bisa di callback)
-    sessionStorage.setItem("oauth_state", state);
-    
-    const authUrl = `https://auth.readtalk.workers.dev/?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${state}`;
-    
-    window.location.href = authUrl;
+    // Mock login: simpan token palsu, langsung redirect ke resendlist
+    localStorage.setItem("readtalk_token", "mock-token-12345");
+    window.location.href = "/resendlist";
   };
 
   return (
