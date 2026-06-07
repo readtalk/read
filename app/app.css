@@ -13,13 +13,6 @@ body {
 	color-scheme: light dark;
 }
 
-/* Dark mode class (untuk toggle manual) */
-.dark,
-.dark body {
-	background-color: #111b21;
-	color: #e9edef;
-}
-
 /* Animasi flip untuk logo */
 @keyframes flip {
 	0% { transform: rotateY(0deg); }
