@@ -9,7 +9,7 @@ export function Welcome() {
     // Simpan state untuk verifikasi (opsional, bisa di callback)
     sessionStorage.setItem("oauth_state", state);
     
-    const authUrl = `https://auth.readtalk.workers.dev/password/register?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${state}`;
+    const authUrl = `https://auth.readtalk.workers.dev/?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${state}`;
     
     window.location.href = authUrl;
   };
