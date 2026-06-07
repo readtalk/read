@@ -4,7 +4,12 @@ export function Welcome() {
   const handleAgree = () => {
     const clientId = "readtalk";
     const redirectUri = window.location.origin + "/callback";
-    const authUrl = `https://auth.readtalk.workers.dev/password/register?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+    const state = Math.random().toString(36).substring(2, 15);
+    
+    // Simpan state untuk verifikasi (opsional, bisa di callback)
+    sessionStorage.setItem("oauth_state", state);
+    
+    const authUrl = `https://auth.readtalk.workers.dev/password/register?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${state}`;
     
     window.location.href = authUrl;
   };
@@ -13,7 +18,6 @@ export function Welcome() {
     <main className="h-[100dvh] bg-[#f7f8fa] flex flex-col items-center justify-center px-5 font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,sans-serif]">
       <div className="w-full max-w-[330px] flex flex-col items-center text-center">
 
-        {/* LOGO 140px - ANIMASI PAKAI CLASS CSS */}
         <div className="w-[140px] h-[140px] mb-8 animate-flip">
           <img src={logo} alt="READTalk" className="w-full h-full" />
         </div>
@@ -26,7 +30,6 @@ export function Welcome() {
           Read our <a href="#" className="text-[#ff0000] font-medium">Privacy Policies</a>. Tap "Agree and continue" to accept our <a href="#" className="text-[#ff0000] font-medium">Terms of Service</a>.
         </p>
 
-        {/* BUTTON ENGLISH */}
         <button className="h-9 bg-[#f0f0f0] rounded-full px-5 mb-4 flex items-center gap-2 text-[15px] text-[#111b21]">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="opacity-60">
             <circle cx="12" cy="12" r="10"/>
@@ -38,7 +41,6 @@ export function Welcome() {
           </svg>
         </button>
 
-        {/* BUTTON AGREE - redirect ke OpenAuth register */}
         <button
           onClick={handleAgree}
           className="w-full h-12 bg-[#ff0000] text-white text-[15px] font-medium rounded-3xl active:bg-[#e60000]"
