@@ -6,13 +6,18 @@
 		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+/* Base styles */
 html,
 body {
 	@apply bg-white dark:bg-gray-950;
+	color-scheme: light dark;
+}
 
-	@media (prefers-color-scheme: dark) {
-		color-scheme: dark;
-	}
+/* Dark mode class (untuk toggle manual) */
+.dark,
+.dark body {
+	background-color: #111b21;
+	color: #e9edef;
 }
 
 /* Animasi flip untuk logo */
@@ -24,13 +29,4 @@ body {
 .animate-flip {
 	animation: flip 3s linear infinite;
 	transform-style: preserve-3d;
-}
-
-:root {
-  color-scheme: light dark;
-}
-
-.dark {
-  background-color: #111b21;
-  color: #e9edef;
 }
