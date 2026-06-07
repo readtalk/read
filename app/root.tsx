@@ -92,10 +92,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 							<div className="text-3xl">📁</div>
 							<div className="flex-1">
 								<h3 className="font-semibold text-gray-800 dark:text-white">
-									Install READTalk
+									Get Install
 								</h3>
 								<p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-									Get app-like experience with home screen icon
+									App-like experience with home screen icon
 								</p>
 								<div className="flex gap-2 mt-3">
 									<button
