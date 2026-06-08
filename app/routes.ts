@@ -1,6 +1,9 @@
-import { type RouteConfig, index, route } from "@react-router/dev/routes";
+// routes.ts //
+import { type RouteConfig, index, route, layout } from "@react-router/dev/routes";
 
 export default [
-  index("welcome/welcome.tsx"), // Ganti home.tsx langsung ke welcome
-  route("profile", "routes/profile.tsx"),  
+  index("routes/home.tsx"),
+  layout("components/MainLayout.tsx", [
+    route("/profile", "routes/profile.tsx"),    
+  ]),
 ] satisfies RouteConfig;
